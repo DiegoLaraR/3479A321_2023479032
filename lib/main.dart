@@ -11,7 +11,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: '2023479032',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,9 +29,11 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 239, 7, 7),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: '2023479032'),
     );
   }
 }
@@ -55,6 +58,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final int _initialCounter = 0;
+  Color _color = Colors.blue;
+
+  void _changeColor(Color nuevoColor) {
+    setState(() {
+      _color = nuevoColor;
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -65,6 +76,129 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  void _decrementCounter() {
+    setState(() {
+      // This call to setState decrements the counter.
+      _counter--;
+    });
+  }
+
+  void _resetCounter() {
+    setState(() {
+      // This call to setState resets the counter to zero.
+      _counter = _initialCounter;
+    });
+  }
+
+  List<Widget> _interactiveButtons() {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: _incrementCounter,
+            child: const Icon(Icons.add),
+          ),
+          ElevatedButton(
+            onPressed: _decrementCounter,
+            child: const Icon(Icons.remove),
+          ),
+          ElevatedButton(
+            onPressed: _resetCounter,
+            child: const Icon(Icons.restart_alt),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final nuevoColor = await showModalBottomSheet<Color>(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return Container(
+                    constraints: const BoxConstraints(maxHeight: 500),
+                    padding: const EdgeInsets.all(5),
+                    child: SingleChildScrollView(
+                      child: Wrap(
+                        spacing: 3,
+                        runSpacing: 3,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.circle, color: Colors.red),
+                            onPressed: () => Navigator.pop(context, Colors.red),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.circle, color: Colors.green),
+                            onPressed: () =>
+                                Navigator.pop(context, Colors.green),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.circle, color: Colors.blue),
+                            onPressed: () =>
+                                Navigator.pop(context, Colors.blue),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.circle,
+                              color: Colors.purple,
+                            ),
+                            onPressed: () =>
+                                Navigator.pop(context, Colors.purple),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.circle, color: Colors.black),
+                            onPressed: () =>
+                                Navigator.pop(context, Colors.black),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.circle,
+                              color: Colors.yellow,
+                            ),
+                            onPressed: () =>
+                                Navigator.pop(context, Colors.yellow),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.circle, color: Colors.brown),
+                            onPressed: () =>
+                                Navigator.pop(context, Colors.brown),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.circle, color: Colors.pink),
+                            onPressed: () =>
+                                Navigator.pop(context, Colors.pink),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.circle,
+                              color: Colors.orange,
+                            ),
+                            onPressed: () =>
+                                Navigator.pop(context, Colors.orange),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.circle,
+                              color: Color.fromARGB(255, 43, 84, 40),
+                            ),
+                            onPressed: () => Navigator.pop(
+                              context,
+                              Color.fromARGB(255, 43, 84, 40),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+              if (nuevoColor != null) _changeColor(nuevoColor);
+            },
+            child: const Icon(Icons.color_lens),
+          ),
+        ],
+      ),
+    ];
   }
 
   @override
@@ -80,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: _color,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
@@ -104,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
+            const Text('Pixel art sobre una grilla personalizable'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -112,11 +246,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+
+      persistentFooterButtons: _interactiveButtons(),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
