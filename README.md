@@ -1,16 +1,13 @@
-# lab2
+# Laboratorio 2
 
-A new Flutter project.
+#### Datos Personales
+- **Nombre:** Diego Lara
+- **Matrícula:**  2023479032
 
-## Getting Started
+#### Descripción del Proyecto
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Este proyecto fue realizado en flutter como parte del Laboratorio 2, la principal funcion de este trabajo, era lograr familiarizarnos con la creacion de aplicaciones implementando lo siguiente:
+- Personalización de títulos y colores.
+- Implementación de nuevas funciones (sumar, restar, restaurar y cambio de color).
+- Uso de botones persistentes en el pie de la aplicación.
+- Refactorización de código mediante extracción de métodos.
