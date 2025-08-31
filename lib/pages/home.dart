@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({
+    super.key,
+    required this.title,
+    required this.onChangeColor,
+  });
 
   final String title;
+  final Function(Color)? onChangeColor;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -12,13 +17,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final int _initialCounter = 0;
-  Color _color = Colors.blue;
-
-  void _changeColor(Color nuevoColor) {
-    setState(() {
-      _color = nuevoColor;
-    });
-  }
 
   void _incrementCounter() {
     setState(() {
@@ -140,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
               );
-              if (nuevoColor != null) _changeColor(nuevoColor);
+              if (nuevoColor != null) widget.onChangeColor?.call(nuevoColor);
             },
             child: const Icon(Icons.color_lens),
           ),
@@ -152,16 +150,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: _color, title: Text(widget.title)),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(widget.title),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Pixel art sobre una grilla personalizable'),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              'Pixel art sobre una grilla personalizable',
+              style: Theme.of(context).textTheme.bodySmall,
             ),
+            Text('$_counter', style: Theme.of(context).textTheme.bodySmall),
 
             Expanded(
               child: SingleChildScrollView(
