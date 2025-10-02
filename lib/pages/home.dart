@@ -15,134 +15,132 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  final int _initialCounter = 0;
+  Color _color = Colors.blue;
+  Color _colorText = Colors.black;
+  String selectedImage = "assets/pizza.webp";
 
-  void _incrementCounter() {
+  void _changeColor(Color nuevoColor) {
     setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      // This call to setState decrements the counter.
-      _counter--;
-    });
-  }
-
-  void _resetCounter() {
-    setState(() {
-      // This call to setState resets the counter to zero.
-      _counter = _initialCounter;
+      _colorText = (nuevoColor.computeLuminance() > 0.5)
+          ? Colors.black
+          : Colors.white;
+      _color = nuevoColor;
     });
   }
 
   List<Widget> _interactiveButtons() {
     return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton(
-            onPressed: _incrementCounter,
-            child: const Icon(Icons.add),
-          ),
-          ElevatedButton(
-            onPressed: _decrementCounter,
-            child: const Icon(Icons.remove),
-          ),
-          ElevatedButton(
-            onPressed: _resetCounter,
-            child: const Icon(Icons.restart_alt),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final nuevoColor = await showModalBottomSheet<Color>(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) {
-                  return Container(
-                    constraints: const BoxConstraints(maxHeight: 500),
-                    padding: const EdgeInsets.all(5),
-                    child: SingleChildScrollView(
-                      child: Wrap(
-                        spacing: 3,
-                        runSpacing: 3,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.circle, color: Colors.red),
-                            onPressed: () => Navigator.pop(context, Colors.red),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.circle, color: Colors.green),
-                            onPressed: () =>
-                                Navigator.pop(context, Colors.green),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.circle, color: Colors.blue),
-                            onPressed: () =>
-                                Navigator.pop(context, Colors.blue),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.circle,
-                              color: Colors.purple,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                final nuevoColor = await showModalBottomSheet<Color>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return Container(
+                      constraints: const BoxConstraints(maxHeight: 500),
+                      padding: const EdgeInsets.all(5),
+                      child: SingleChildScrollView(
+                        child: Wrap(
+                          spacing: 3,
+                          runSpacing: 3,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.circle, color: Colors.red),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.red),
                             ),
-                            onPressed: () =>
-                                Navigator.pop(context, Colors.purple),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.circle, color: Colors.black),
-                            onPressed: () =>
-                                Navigator.pop(context, Colors.black),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.circle,
-                              color: Colors.yellow,
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Colors.green,
+                              ),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.green),
                             ),
-                            onPressed: () =>
-                                Navigator.pop(context, Colors.yellow),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.circle, color: Colors.brown),
-                            onPressed: () =>
-                                Navigator.pop(context, Colors.brown),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.circle, color: Colors.pink),
-                            onPressed: () =>
-                                Navigator.pop(context, Colors.pink),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.circle,
-                              color: Colors.orange,
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Colors.blue,
+                              ),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.blue),
                             ),
-                            onPressed: () =>
-                                Navigator.pop(context, Colors.orange),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.circle,
-                              color: Color.fromARGB(255, 43, 84, 40),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Colors.purple,
+                              ),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.purple),
                             ),
-                            onPressed: () => Navigator.pop(
-                              context,
-                              Color.fromARGB(255, 43, 84, 40),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Colors.black,
+                              ),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.black),
                             ),
-                          ),
-                        ],
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Colors.yellow,
+                              ),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.yellow),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Colors.brown,
+                              ),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.brown),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Colors.pink,
+                              ),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.pink),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Colors.orange,
+                              ),
+                              onPressed: () =>
+                                  Navigator.pop(context, Colors.orange),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.circle,
+                                color: Color.fromARGB(255, 43, 84, 40),
+                              ),
+                              onPressed: () => Navigator.pop(
+                                context,
+                                Color.fromARGB(255, 43, 84, 40),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-              if (nuevoColor != null) widget.onChangeColor?.call(nuevoColor);
-            },
-            child: const Icon(Icons.color_lens),
-          ),
-        ],
+                    );
+                  },
+                );
+                if (nuevoColor != null) _changeColor(nuevoColor);
+              },
+              child: const Icon(Icons.color_lens),
+            ),
+          ],
+        ),
       ),
     ];
   }
@@ -151,49 +149,117 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: _color,
+        foregroundColor: _colorText,
         title: Text(widget.title),
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 22.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          About(color: _color, colorText: _colorText),
+                    ),
+                  ),
+                  icon: Icon(Icons.info),
+                  label: Text("About"),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Pixel art sobre una grilla personalizable',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            Text('$_counter', style: Theme.of(context).textTheme.bodySmall),
-
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/Pixel-Art-Pizza-2.webp',
-                      height: 400,
-                      width: 400,
-                    ),
-                    Image.asset(
-                      'assets/Pixel-Art-Pizza-2.webp',
-                      height: 400,
-                      width: 400,
-                    ),
-                    Image.asset(
-                      'assets/Pixel-Art-Pizza-2.webp',
-                      height: 400,
-                      width: 400,
-                    ),
-                    Image.asset(
-                      'assets/Pixel-Art-Pizza-2.webp',
-                      height: 400,
-                      width: 400,
-                    ),
-                  ],
+        child: Card(
+          margin: EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 400,
+                  height: 400,
+                  child: Image.asset(selectedImage),
                 ),
-              ),
+
+                const SizedBox(height: 8),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 1.0,
+                    horizontal: 4.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ListArt(color: _color, colorText: _colorText),
+                          ),
+                        ),
+                        icon: Icon(Icons.brush),
+                        label: Text("Crear"),
+                      ),
+
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                        ),
+                        icon: Icon(Icons.share),
+                        label: Text("Compartir"),
+
+                        onPressed: () {},
+                      ),
+
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () async {
+                          final result = await Navigator.push<String>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListCreation(
+                                color: _color,
+                                colorText: _colorText,
+                              ),
+                            ),
+                          );
+                          if (result != null) {
+                            setState(() => selectedImage = result);
+                          }
+                        },
+                        icon: Icon(Icons.landscape),
+                        label: Text("Creadas"),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
 

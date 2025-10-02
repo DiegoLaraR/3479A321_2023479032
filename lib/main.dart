@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
 
-      home: MyHomePage(title: '2023479032', onChangeColor: _updateColor),
+      home: Home(title: '2023479032', onChangeColor: _updateColor),
     );
   }
 }
