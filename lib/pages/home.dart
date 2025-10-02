@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lab2/pages/about.dart';
 import 'package:lab2/pages/list_art.dart';
 import 'package:lab2/pages/list_creation.dart';
+import 'package:lab2/pages/pixel_art_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -37,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
 
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ElevatedButton(
               onPressed: () async {
@@ -141,6 +142,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 if (nuevoColor != null) _changeColor(nuevoColor);
               },
               child: const Icon(Icons.color_lens),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PixelArtScreen()),
+              ),
+              child: const Icon(Icons.grid_on),
             ),
           ],
         ),
