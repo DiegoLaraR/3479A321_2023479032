@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lab2/pages/about.dart';
+import 'package:lab2/pages/list_art.dart';
+import 'package:lab2/pages/list_creation.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
