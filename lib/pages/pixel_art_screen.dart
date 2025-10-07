@@ -24,7 +24,7 @@ class _PixelArtScreenState extends State<PixelArtScreen> {
     super.didChangeDependencies();
     final sizeGrid = context.read<ConfigurationData>().getSize;
 
-    logger.d('Tamaño de Grid: ${sizeGrid}');
+    logger.d('Tamaño de Grid: $sizeGrid');
     logger.d("PixelArtScreen dependencias cambiadas");
   }
 

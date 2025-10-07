@@ -9,5 +9,6 @@ class ConfigurationData extends ChangeNotifier {
     notifyListeners();
   }
 
+  @override
   notifyListeners();
 }

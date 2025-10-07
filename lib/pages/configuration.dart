@@ -11,13 +11,19 @@ class Configuration extends StatefulWidget {
 
 class _ConfigurationState extends State<Configuration> {
   final List<int> sizes = [16, 18, 20, 24, 32];
-  final List<String> palettes = ['Retro', 'Grayscale', 'Vibrant', 'Pastel'];
-  String? selectedPalette;
+  final List<String> palettes = [
+    'Default',
+    'Retro',
+    'Grayscale',
+    'Vibrant',
+    'Pastel',
+  ];
+  String selectedPalette = 'Default';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Configuración')),
+      appBar: AppBar(title: const Text('Configuracion')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
 
@@ -61,7 +67,7 @@ class _ConfigurationState extends State<Configuration> {
 
               onChanged: (value) {
                 setState(() {
-                  selectedPalette = value;
+                  selectedPalette = value!;
                 });
               },
             ),
