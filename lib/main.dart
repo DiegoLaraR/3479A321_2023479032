@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lab2/providers/configuration_data.dart';
 import 'pages/home.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
 
 void main() {
@@ -29,24 +31,16 @@ class _MyAppState extends State<MyApp> {
 
     logger.d("Logger is working!");
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: '2023479032',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: _color),
-        textTheme: TextTheme(
-          displayLarge: const TextStyle(
-            fontSize: 34,
-            fontWeight: FontWeight.normal,
-          ),
-          titleLarge: GoogleFonts.oswald(
-            fontSize: 30,
-            fontStyle: FontStyle.italic,
-          ),
+    return ChangeNotifierProvider<ConfigurationData>(
+      create: (context) => ConfigurationData(),
+      child: MaterialApp(
+        title: 'My App',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: MyHomePage(
+          title: 'Flutter Demo Home Page',
+          onChangeColor: _updateColor,
         ),
       ),
-
-      home: MyHomePage(title: '2023479032', onChangeColor: _updateColor),
     );
   }
 }

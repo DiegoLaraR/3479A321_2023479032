@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lab2/pages/configuration.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+import 'package:lab2/providers/configuration_data.dart';
 
 class PixelArtScreen extends StatefulWidget {
   const PixelArtScreen({super.key});
@@ -13,12 +16,15 @@ class _PixelArtScreenState extends State<PixelArtScreen> {
   @override
   void initState() {
     super.initState();
-    logger.d("PixelArtScreen Inicializado");
+    logger.d('Initializando PixelArtScreen');
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final sizeGrid = context.read<ConfigurationData>().getSize;
+
+    logger.d('Tamaño de Grid: ${sizeGrid}');
     logger.d("PixelArtScreen dependencias cambiadas");
   }
 
@@ -34,13 +40,34 @@ class _PixelArtScreenState extends State<PixelArtScreen> {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     logger.d("PixelArtScreen didUpdateWidget llamado");
+    logger.d("Tamaño de grid: ${context.read<ConfigurationData>().getSize}");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Pixel Art Screen'), centerTitle: true),
-      body: const Center(child: Text('Pixel Art Screen Content')),
+      body: Center(
+        child: Column(
+          children: [
+            Text('Pixel Art Screen Content'),
+            Text(
+              "Tamaño del SizeGrid: ${context.watch<ConfigurationData>().getSize}",
+            ),
+          ],
+        ),
+      ),
+      persistentFooterButtons: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Configuration()),
+            );
+          },
+          child: const Text('config'),
+        ),
+      ],
     );
   }
 
