@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:lab2/services/sharedPreferenceServices.dart';
+import 'package:logger/logger.dart';
 
 class ConfigurationData extends ChangeNotifier {
-  int _size = 16;
-  int get getSize => _size;
+  final SharedPreferencesService prefsService;
+  Logger logger = Logger();
 
-  void setSize(int newSize) {
-    _size = newSize;
+  int _size = 16;
+  String _palette = "Default";
+
+  int get getSize => _size;
+  String get getPalette => _palette;
+
+  ConfigurationData(this.prefsService) {
+    _loadPreferences();
+  }
+
+  Future<void> _loadPreferences() async {
+    _size = await prefsService.loadBoardSize();
+    _palette = await prefsService.loadPalette();
     notifyListeners();
   }
 
-  @override
-  notifyListeners();
+  Future<void> setSize(int newSize) async {
+    _size = newSize;
+    await prefsService.saveBoardSize(newSize);
+    notifyListeners();
+  }
+
+  Future<void> setPalette(String value) async {
+    _palette = value;
+    await prefsService.savePalette(value);
+    notifyListeners();
+  }
 }

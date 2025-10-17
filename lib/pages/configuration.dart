@@ -18,10 +18,19 @@ class _ConfigurationState extends State<Configuration> {
     'Vibrant',
     'Pastel',
   ];
-  String selectedPalette = 'Default';
+
+  String? selectedPalette;
+  int? selectedSize;
 
   @override
   Widget build(BuildContext context) {
+    selectedPalette = selectedPalette == null
+        ? context.watch<ConfigurationData>().getPalette
+        : "Default";
+    selectedSize = selectedSize == null
+        ? context.watch<ConfigurationData>().getSize
+        : 16;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Configuracion')),
       body: Padding(
@@ -39,6 +48,7 @@ class _ConfigurationState extends State<Configuration> {
             const SizedBox(height: 10),
 
             DropdownButtonFormField<int>(
+              initialValue: selectedSize,
               items: [
                 for (var e in sizes)
                   DropdownMenuItem(value: e, child: Text('$e px')),
@@ -60,15 +70,16 @@ class _ConfigurationState extends State<Configuration> {
             const SizedBox(height: 10),
 
             DropdownButtonFormField<String>(
+              initialValue: selectedPalette,
               items: [
                 for (var p in palettes)
                   DropdownMenuItem(value: p, child: Text(p)),
               ],
 
               onChanged: (value) {
-                setState(() {
-                  selectedPalette = value!;
-                });
+                if (value != null) {
+                  context.read<ConfigurationData>().setPalette(value);
+                }
               },
             ),
           ],

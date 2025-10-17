@@ -3,6 +3,7 @@ import 'package:lab2/providers/configuration_data.dart';
 import 'pages/home.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
+import 'services/sharedPreferenceServices.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,28 +18,27 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Color _color = Colors.blue; // color inicial
+  // Color _color = Colors.blue; // color inicial
 
-  void _updateColor(Color newColor) {
-    setState(() {
-      _color = newColor;
-    });
-  }
+  // void _updateColor(Color newColor) {
+  //   setState(() {
+  //     _color = newColor;
+  //   });
+  // }
 
+  @override
   Widget build(BuildContext context) {
     var logger = Logger();
 
     logger.d("Logger is working!");
 
     return ChangeNotifierProvider<ConfigurationData>(
-      create: (context) => ConfigurationData(),
+      create: (context) => ConfigurationData(SharedPreferencesService()),
+
       child: MaterialApp(
         title: 'My App',
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: MyHomePage(
-          title: 'Flutter Demo Home Page',
-          onChangeColor: _updateColor,
-        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }

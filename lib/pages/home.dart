@@ -5,14 +5,9 @@ import 'package:lab2/pages/list_creation.dart';
 import 'package:lab2/pages/pixel_art_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({
-    super.key,
-    required this.title,
-    required this.onChangeColor,
-  });
+  const MyHomePage({super.key, required this.title});
 
   final String title;
-  final Function(Color)? onChangeColor;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
