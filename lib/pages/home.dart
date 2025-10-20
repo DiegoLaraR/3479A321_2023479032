@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lab2/pages/about.dart';
-import 'package:lab2/pages/list_art.dart';
+// import 'package:lab2/pages/list_art.dart';
 import 'package:lab2/pages/list_creation.dart';
 import 'package:lab2/pages/pixel_art_screen.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -16,7 +19,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Color _color = Colors.blue;
   Color _colorText = Colors.black;
-  String selectedImage = "assets/pizza.webp";
+  String? selectedImage;
 
   void _changeColor(Color nuevoColor) {
     setState(() {
@@ -31,7 +34,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -138,17 +140,49 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Icon(Icons.color_lens),
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PixelArtScreen()),
-              ),
-              child: const Icon(Icons.grid_on),
-            ),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     final result = await Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => PixelArtScreen()),
+            //     );
+
+            //     if (result != null) {
+            //       setState(() => selectedImage = result);
+            //     }
+            //   },
+            //   child: const Icon(Icons.grid_on),
+            // ),
           ],
         ),
       ),
     ];
+  }
+
+  Future<void> _loadLastImage() async {
+    try {
+      final imgDir = await getApplicationDocumentsDirectory();
+      final List<File> images = [];
+
+      final imagesList = imgDir.listSync();
+
+      for (var img in imagesList) {
+        if (img is File) {
+          final path = img.path.toLowerCase();
+          if (path.endsWith(".png")) {
+            images.add(img);
+          }
+        }
+      }
+
+      setState(() => selectedImage = images.last.path);
+    } catch (_) {}
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLastImage();
   }
 
   @override
@@ -185,6 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+
       body: Center(
         child: Card(
           margin: EdgeInsets.all(16),
@@ -197,7 +232,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(
                   width: 400,
                   height: 400,
-                  child: Image.asset(selectedImage),
+
+                  child: selectedImage == null
+                      ? Text(
+                          "No se pudo cargar una imagen. Por favor selecciona una imagen en la pantalla de creaciones o crea una nueva",
+                          textAlign: TextAlign.center,
+                        )
+                      : Image.file(
+                          File(selectedImage!),
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.error),
+                        ),
                 ),
 
                 const SizedBox(height: 8),
@@ -216,13 +262,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
                         ),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ListArt(color: _color, colorText: _colorText),
-                          ),
-                        ),
+                        onPressed: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PixelArtScreen(),
+                            ),
+                          );
+
+                          if (result != null) {
+                            setState(() => selectedImage = result);
+                          }
+                        },
                         icon: Icon(Icons.brush),
                         label: Text("Crear"),
                       ),
@@ -235,7 +286,29 @@ class _MyHomePageState extends State<MyHomePage> {
                         icon: Icon(Icons.share),
                         label: Text("Compartir"),
 
-                        onPressed: () {},
+                        // Agregado por IA de VSCode
+                        onPressed: () async {
+                          if (selectedImage == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('No hay imagen para compartir'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          try {
+                            // Share the image file using share_plus
+                            await Share.shareXFiles([
+                              XFile(selectedImage!),
+                            ], text: 'Mi pixel art');
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Error al compartir: $e')),
+                            );
+                          }
+                        },
+                        // Hasta aquí
                       ),
 
                       TextButton.icon(

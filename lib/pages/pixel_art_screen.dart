@@ -1,6 +1,10 @@
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:lab2/pages/configuration.dart';
 import 'package:lab2/providers/configuration_data.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
 
@@ -54,30 +58,36 @@ class _PixelArtScreenState extends State<PixelArtScreen> {
     logger.d("Grid size set to: $_sizeGrid");
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Code to handle changes in dependencies
-    _sizeGrid = context.watch<ConfigurationData>().getSize;
-
-    //Cambios de codigo original
-    // Se ajusta _cellColors si cambia el tamaño de la cuadrícula
-    final newSize = context.watch<ConfigurationData>().getSize;
-    if (newSize != _sizeGrid) {
-      final old = _cellColors;
-      final newLen = newSize * newSize;
-      final newList = List<Color>.filled(newLen, Colors.transparent);
-      final copyLen = (old.length < newLen) ? old.length : newLen;
-      for (var i = 0; i < copyLen; i++) {
-        newList[i] = old[i];
+  // Cargar PixelArt
+  Future<void> _savePixelArt() async {
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(
+      recorder,
+      Rect.fromLTWH(0, 0, _sizeGrid * 20.0, _sizeGrid * 20.0),
+    );
+    for (int row = 0; row < _sizeGrid; row++) {
+      for (int col = 0; col < _sizeGrid; col++) {
+        final color = _cellColors[row * _sizeGrid + col];
+        final paint = Paint()..color = color;
+        final rect = Rect.fromLTWH(col * 20.0, row * 20.0, 20.0, 20.0);
+        canvas.drawRect(rect, paint);
       }
-      setState(() {
-        _sizeGrid = newSize;
-        _cellColors = newList;
-      });
     }
+    final picture = recorder.endRecording();
+    final image = await picture.toImage(_sizeGrid * 20, _sizeGrid * 20);
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final imageBytes = byteData!.buffer.asUint8List();
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath =
+        '${directory.path}/pixel_art_${DateTime.now().millisecondsSinceEpoch}.png';
+    final file = File(filePath);
+    await file.writeAsBytes(imageBytes);
+    logger.d("Pixel art saved to: $filePath");
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Pixel art saved to: $filePath')));
 
-    logger.d("Dependencies changed in PixelArtScreen. Mounted: $mounted");
+    Navigator.pop(context, filePath);
   }
 
   @override
@@ -106,6 +116,32 @@ class _PixelArtScreenState extends State<PixelArtScreen> {
     super.reassemble();
     // Code to handle hot reload
     logger.d("PixelArtScreen reassembled. Mounted: $mounted");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Code to handle changes in dependencies
+    _sizeGrid = context.watch<ConfigurationData>().getSize;
+
+    //Cambios de codigo original
+    // Se ajusta _cellColors si cambia el tamaño de la cuadrícula
+    final newSize = context.watch<ConfigurationData>().getSize;
+    if (newSize != _sizeGrid) {
+      final old = _cellColors;
+      final newLen = newSize * newSize;
+      final newList = List<Color>.filled(newLen, Colors.transparent);
+      final copyLen = (old.length < newLen) ? old.length : newLen;
+      for (var i = 0; i < copyLen; i++) {
+        newList[i] = old[i];
+      }
+      setState(() {
+        _sizeGrid = newSize;
+        _cellColors = newList;
+      });
+    }
+
+    logger.d("Dependencies changed in PixelArtScreen. Mounted: $mounted");
   }
 
   @override
@@ -164,7 +200,7 @@ class _PixelArtScreenState extends State<PixelArtScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      logger.d('Button pressed');
+                      _savePixelArt();
                     },
                     child: const Text('Submit'),
                   ),
