@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:lab2/models/pixel_art.dart';
 import 'package:lab2/pages/configuration.dart';
 import 'package:lab2/providers/configuration_data.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,7 +22,6 @@ class _PixelArtScreenState extends State<PixelArtScreen> {
   Color _selectedColor = Colors.black;
   File? _backgroundImage;
   double _backgroundOpacity = 0.5;
-  PixelArt? _pixelArt;
 
   // Cambios agregados por IA
   bool _showNumbers = true;

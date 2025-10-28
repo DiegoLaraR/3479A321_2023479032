@@ -31,9 +31,7 @@ class _ConfigurationState extends State<Configuration> {
     selectedSize = selectedSize == null
         ? context.watch<ConfigurationData>().getSize
         : 16;
-    selectedOpacity = selectedOpacity == null
-        ? context.read<ConfigurationData>().getOpacity
-        : context.read<ConfigurationData>().getOpacity;
+    selectedOpacity = context.watch<ConfigurationData>().getOpacity;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Configuracion')),

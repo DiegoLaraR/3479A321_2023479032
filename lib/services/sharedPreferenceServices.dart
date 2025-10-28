@@ -11,7 +11,6 @@ class SharedPreferencesService {
   static const String _keyBackgroundOpacity = 'backgroundOpacity';
   // NUEVOS KEYS AGREGADOS POR IA
   static const String _keyPixelArtInProgress = 'pixelArtInProgress';
-  static const String _keyPixelArtColors = 'pixelArtColors';
 
   Future<int> loadBoardSize() async {
     final prefs = await SharedPreferences.getInstance();
