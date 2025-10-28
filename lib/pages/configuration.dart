@@ -21,6 +21,7 @@ class _ConfigurationState extends State<Configuration> {
 
   String? selectedPalette;
   int? selectedSize;
+  double? selectedOpacity;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,9 @@ class _ConfigurationState extends State<Configuration> {
     selectedSize = selectedSize == null
         ? context.watch<ConfigurationData>().getSize
         : 16;
+    selectedOpacity = selectedOpacity == null
+        ? context.read<ConfigurationData>().getOpacity
+        : context.read<ConfigurationData>().getOpacity;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Configuracion')),
@@ -81,6 +85,30 @@ class _ConfigurationState extends State<Configuration> {
                   context.read<ConfigurationData>().setPalette(value);
                 }
               },
+            ),
+
+            const SizedBox(height: 10),
+
+            Column(
+              children: [
+                Text('Ajustar Opacidad'),
+
+                Slider(
+                  value: selectedOpacity!,
+                  min: 0.1,
+
+                  max: 1.0,
+                  divisions: 10,
+                  label: '${(selectedOpacity! * 100).toInt()}%',
+                  onChanged: (value) {
+                    setState(() {
+                      context.read<ConfigurationData>().setBackgroundOpacity(
+                        value,
+                      );
+                    });
+                  },
+                ),
+              ],
             ),
           ],
         ),
